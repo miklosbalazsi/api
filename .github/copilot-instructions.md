@@ -1,0 +1,2 @@
+- The workspace was scaffolded by the assistant.
+- Follow the README.md to build and run the services.

@@ -1,0 +1,26 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+/build/
+**/build/
+.gradle/
+out/
+
+# Gradle Wrapper
+gradle/wrapper/
+
+# VSCode
+.vscode/
+
+# Node
+node_modules/
+/frontend/dist/
+/frontend/node_modules/
+
+# macOS
+.DS_Store
+
+# logs
+*.log
