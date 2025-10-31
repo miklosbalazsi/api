@@ -1,15 +1,16 @@
 plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
-    java
+    id("java")
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
+    }
 }
 
-repositories { mavenCentral() }
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -17,7 +18,9 @@ dependencies {
     
     // Testing dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.0") 
 
     // Lombok
     compileOnly("org.projectlombok:lombok:1.18.30")
@@ -26,6 +29,7 @@ dependencies {
     testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
 }
 
-tasks.withType<Test> {
+tasks.test {
     useJUnitPlatform()
 }
+
