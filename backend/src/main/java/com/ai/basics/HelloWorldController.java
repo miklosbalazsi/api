@@ -1,0 +1,21 @@
+package com.ai.basics;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
+import com.ai.basics.services.MetricsService;
+import com.ai.basics.utils.DateTimeUtil;
+import lombok.RequiredArgsConstructor;
+
+@RestController
+@RequiredArgsConstructor
+public class HelloWorldController {
+
+    private final MetricsService metricsService;
+
+
+    @GetMapping("/api/hello")
+    public Map<String, String> hello() {
+        return Map.of("message", "Hello World", "uptime", DateTimeUtil.formatUptime(metricsService.getUptime()));
+    }
+}
