@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.ai.basics;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
