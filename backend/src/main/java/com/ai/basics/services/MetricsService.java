@@ -4,9 +4,11 @@
  * 
  */
 package com.ai.basics.services;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
+
 import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.stereotype.Service;  
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -16,7 +18,8 @@ public class MetricsService {
 
     /**
      * Return the uptime of the application in unix milliseconds.
-     * @return uptime in unix milliseconds 
+     * 
+     * @return uptime in unix milliseconds
      */
     public long getUptime() {
         return (long) meterRegistry.get("process.uptime").gauge().value();

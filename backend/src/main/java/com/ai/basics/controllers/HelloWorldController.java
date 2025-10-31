@@ -1,10 +1,13 @@
-package com.ai.basics;
+package com.ai.basics.controllers;
+
+import java.util.Map;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.Map;
+
 import com.ai.basics.services.MetricsService;
 import com.ai.basics.utils.DateTimeUtil;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
