@@ -22,12 +22,9 @@ class HelloControllerIT {
 
     @Test
     void helloEndpointReturns200AndJson() {
-        ResponseEntity<Map<String, String>> response = restTemplate.exchange(
-            "/api/hello",
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<Map<String, String>>() {}
-        );
+        ResponseEntity<Map<String, String>> response = restTemplate.exchange("/api/hello", HttpMethod.GET, null,
+                new ParameterizedTypeReference<Map<String, String>>() {
+                });
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         Map<String, String> body = Objects.requireNonNull(response.getBody());

@@ -16,9 +16,9 @@ public class HelloWorldController {
 
     private final MetricsService metricsService;
 
-
     @GetMapping("/api/hello")
     public Map<String, String> hello() {
-        return Map.of("message", "Hello World", "uptime", DateTimeUtil.formatUptime(metricsService.getUptime()));
+        return Map.of("message", "Hello World", "uptime",
+                DateTimeUtil.formatUptimeFromMillis(metricsService.getUptime()));
     }
 }
