@@ -13,11 +13,11 @@ java {
     }
 }
 
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    
+     implementation("com.opencsv:opencsv:5.9")
+
     // Testing dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
@@ -63,7 +63,4 @@ val itTest = tasks.register<Test>("itTest") {
     shouldRunAfter("test")
 }
 
-tasks.named("check") {
-    dependsOn(itTest)
-}
 

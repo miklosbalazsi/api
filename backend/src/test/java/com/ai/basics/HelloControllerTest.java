@@ -24,7 +24,7 @@ public class HelloControllerTest {
 
     @Test
     public void helloReturnsMessage() throws Exception {
-        when(metricsService.getUptime()).thenReturn(3600L); // mock 1 hour uptime
+        when(metricsService.getUptime()).thenReturn(3600000L); // mock 1 hour uptime (in milliseconds)
 
         mvc.perform(get("/api/hello")).andExpect(status().isOk()).andExpect(jsonPath("$.message").value("Hello World"))
                 .andExpect(jsonPath("$.uptime").value("01:00:00"));
