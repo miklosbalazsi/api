@@ -53,22 +53,21 @@ public class SixDegrees {
             SearchNode<Person, Movie> personNode = new SearchNode<Person, Movie>(person, movie, null);
 
             // Get All people acted in this movie
-            List<SearchNode<Person, Movie>> actors = getAllPeopleInMovie(stars, people, movie).stream()
-                    .map(p -> new SearchNode<>(p, movie, personNode)).toList();
+            List<SearchNode<Person, Movie>> actors = getAllPeopleInMovie(stars, people, movie).stream().map(p -> new SearchNode<>(p, movie, personNode))
+                    .toList();
 
             // Add SearchNode to graph
             graph.addSearchNode(personNode, actors);
         }
 
-        //Print Number of Nodes in the graph
+        // Print Number of Nodes in the graph
         log.info("Number of nodes in the graph: {}", graph.getGraph().size());
 
         return graph;
     }
 
     private List<Person> getAllPeopleInMovie(List<Star> stars, List<Person> people, Movie movie) {
-        List<Person> actors = stars.stream().filter(s -> s.getMovieId() == movie.getId())
-                .map(s -> getPeopleById(people, s.getPersonId())).toList();
+        List<Person> actors = stars.stream().filter(s -> s.getMovieId() == movie.getId()).map(s -> getPeopleById(people, s.getPersonId())).toList();
         return actors;
     }
 
@@ -82,10 +81,6 @@ public class SixDegrees {
 
     private Movie getMovieById(List<Movie> movies, int id) {
         return movies.stream().filter(m -> m.getId() == id).findFirst().orElse(null);
-    }
-
-    private Movie getMovieByTitle(List<Movie> movies, String title) {
-        return movies.stream().filter(m -> m.getTitle().equalsIgnoreCase(title)).findFirst().orElse(null);
     }
 
 }
