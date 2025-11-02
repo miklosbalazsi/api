@@ -17,9 +17,9 @@ public class MetricsService {
     private final MeterRegistry meterRegistry;
 
     /**
-     * Return the uptime of the application in unix milliseconds.
+     * Return the uptime of the application in seconds.
      * 
-     * @return uptime in unix milliseconds
+     * @return uptime in seconds
      */
     public long getUptime() {
         return (long) meterRegistry.get("process.uptime").gauge().value();

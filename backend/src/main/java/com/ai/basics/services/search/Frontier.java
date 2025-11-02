@@ -56,6 +56,10 @@ public class Frontier<TState, TAction> {
 
     }
 
+    public int getVisitedNodesCount() {
+        return visitedStates.size();
+    }
+
     public boolean isEmpty() {
         return queue.isEmpty();
     }

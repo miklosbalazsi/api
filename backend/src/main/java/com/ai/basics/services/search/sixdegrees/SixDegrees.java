@@ -20,7 +20,7 @@ public class SixDegrees {
 
     private final ReadCsvService readCsvService;
 
-    public List<SearchNode<Person, Movie>> findConnection(String personA, String personB) {
+    public void findConnection(String personA, String personB) {
 
         // ReadCsvFiles
         List<Movie> movies = readCsvService.readMovies(ReadCsvService.DatasetSize.SMALL);
@@ -34,10 +34,12 @@ public class SixDegrees {
         // Generate SearchGraph
         SearchGraph<Person, Movie> graphSearch = buildGraph(movies, people, stars);
 
-        List<SearchNode<Person, Movie>> result = graphSearch.bfsSearch(new SearchNode<Person, Movie>(getPeopleByName(people, personA), null, null),
-                new SearchNode<Person, Movie>(getPeopleByName(people, personB), null, null));
-        SearchGraph.printResult(result);
-        return result;
+        SearchNode<Person, Movie> startNode = new SearchNode<Person, Movie>(getPeopleByName(people, personA), null, null);
+        SearchNode<Person, Movie> goalNode = new SearchNode<Person, Movie>(getPeopleByName(people, personB), null, null);
+
+        SearchNode<Person, Movie> resultNode = graphSearch.bfsSearch(startNode, goalNode);
+
+        SearchGraph.printResult(graphSearch, startNode, resultNode);
     }
 
     private SearchGraph<Person, Movie> buildGraph(List<Movie> movies, List<Person> people, List<Star> stars) {
@@ -56,8 +58,10 @@ public class SixDegrees {
 
             // Add SearchNode to graph
             graph.addSearchNode(personNode, actors);
-
         }
+
+        //Print Number of Nodes in the graph
+        log.info("Number of nodes in the graph: {}", graph.getGraph().size());
 
         return graph;
     }

@@ -17,7 +17,7 @@ public class SearchNode<TState, TAction> {
     private SearchNode<TState, TAction> parent;
 
     public String toString() {
-        return "SearchNode{state=" + state + ", action=" + action + "}";
+        return "SearchNode{state=" + state + ", action=" + action + ", parentState=" + (parent != null ? parent.getState() : null) + "}";
     }
 
     // Equals and hashCode based on state

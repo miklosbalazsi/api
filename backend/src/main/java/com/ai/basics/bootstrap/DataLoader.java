@@ -19,7 +19,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         log.info("SixDegrees started - executing startup logic");
 
-        sixdegrees.findConnection("Kevin Bacon", "Tom Hanks");
+        sixdegrees.findConnection("Robin Wright", "Kevin Bacon");
 
         log.info("SixDegrees startup logic completed");
 
