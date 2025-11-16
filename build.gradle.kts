@@ -1,6 +1,8 @@
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+
 plugins {
     // Provide plugin versions for subprojects without applying to root
-    id("org.springframework.boot") version "3.2.12" apply false
+    id("org.springframework.boot") version "3.3.2" apply false
     id("io.spring.dependency-management") version "1.1.6" apply false
     java
 }
@@ -35,7 +37,6 @@ subprojects {
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(21))
-            vendor.set(JvmVendorSpec.ADOPTIUM)
         }
     }
 }

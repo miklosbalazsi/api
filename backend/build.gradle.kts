@@ -1,3 +1,5 @@
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+
 plugins {
     id("org.springframework.boot")
     id("io.spring.dependency-management")
@@ -7,7 +9,6 @@ plugins {
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
-        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 }
 
