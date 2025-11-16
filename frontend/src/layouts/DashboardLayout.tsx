@@ -4,6 +4,8 @@ import {
   DashboardOutlined,
   NodeIndexOutlined,
   BorderOutlined,
+  DeploymentUnitOutlined,
+  CalculatorOutlined,
 } from '@ant-design/icons';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 
@@ -31,6 +33,16 @@ export default function DashboardLayout() {
       key: '/maze',
       icon: <BorderOutlined />,
       label: <Link to="/maze">Maze Solver</Link>,
+    },
+    {
+      key: '/visualize',
+      icon: <DeploymentUnitOutlined />,
+      label: <Link to="/visualize">Visualize Graph</Link>,
+    },
+    {
+      key: '/multiplication-practice',
+      icon: <CalculatorOutlined />,
+      label: <Link to="/multiplication-practice">Multiplication Practice</Link>,
     },
   ];
 

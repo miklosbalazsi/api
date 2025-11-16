@@ -4,8 +4,6 @@ plugins {
     id("java")
 }
 
-import org.gradle.api.tasks.testing.Test
-
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
@@ -16,7 +14,7 @@ java {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-     implementation("com.opencsv:opencsv:5.9")
+     implementation("com.opencsv:opencsv:5.10")
 
     // Testing dependencies
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -35,8 +33,6 @@ tasks.test {
     useJUnitPlatform()
 }
 
-
-// --- Integration test source set (src/it) and task configuration ---
 sourceSets {
     val it by creating {
         java.srcDir("src/it/java")
@@ -51,7 +47,6 @@ sourceSets {
 configurations["itImplementation"].extendsFrom(configurations["testImplementation"])
 configurations["itRuntimeOnly"].extendsFrom(configurations["testRuntimeOnly"])
 
-// Register the integration test task and wire it into the lifecycle
 val itTest = tasks.register<Test>("itTest") {
     description = "Runs integration tests."
     group = "verification"
@@ -63,4 +58,23 @@ val itTest = tasks.register<Test>("itTest") {
     shouldRunAfter("test")
 }
 
+tasks.register<Exec>("deployToRaspberryPi") {
+    group = "deployment"
+    description = "Deploys the JAR file to the Raspberry Pi"
 
+    val jarFile = "${layout.buildDirectory.get()}/libs/${project.name}-${version}.jar"
+    val raspberryPiUser = "pi" // Replace with your Raspberry Pi username
+    val raspberryPiHost = "192.168.1.100" // Replace with your Raspberry Pi's IP address
+    val raspberryPiPath = "/home/pi/app" // Replace with the target directory on your Raspberry Pi
+
+    inputs.file(jarFile)
+    outputs.upToDateWhen { false }
+
+    doFirst {
+        if (!file(jarFile).exists()) {
+            throw GradleException("JAR file not found: $jarFile. Build the project first.")
+        }
+    }
+
+    commandLine("scp", jarFile, "$raspberryPiUser@$raspberryPiHost:$raspberryPiPath")
+}
