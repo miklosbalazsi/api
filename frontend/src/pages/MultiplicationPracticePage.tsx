@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Card, Col, Input, message, Row} from 'antd';
 
 export default function MultiplicationPracticePage() {
@@ -9,6 +9,9 @@ export default function MultiplicationPracticePage() {
     const [userAnswer, setUserAnswer] = useState('');
     const [score, setScore] = useState(0);
     const [statistics, setStatistics] = useState<Record<string, { success: number; fail: number, successRate: number }>>(generateInitialStatistics);
+    const [startTime, setStartTime] = useState<number | null>(null);
+    const [endTime, setEndTime] = useState<number | null>(null);
+    const [elapsedTime, setElapsedTime] = useState<number>(0);
 
     function generateInitialStatistics() {
         const stats: Record<string, { success: number; fail: number, successRate: number }> = {};
@@ -60,7 +63,36 @@ export default function MultiplicationPracticePage() {
         };
     }
 
+    useEffect(() => {
+        // Start the timer when the component mounts
+        setStartTime(Date.now());
+    }, []);
+
+    useEffect(() => {
+        // Check if the matrix is fully green
+        const allGreen = Object.values(statistics).every(({successRate}) => successRate >= 90);
+        if (allGreen && startTime && !endTime) {
+            setEndTime(Date.now());
+        }
+    }, [statistics, startTime, endTime]);
+
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        if (!endTime) {
+            timer = setInterval(() => {
+                if (startTime) {
+                    setElapsedTime(Date.now() - startTime);
+                }
+            }, 1000);
+        } else if (endTime) {
+            setElapsedTime(endTime - startTime!);
+        }
+        return () => clearInterval(timer);
+    }, [startTime, endTime]);
+
     const handleCheckAnswer = () => {
+        if (endTime) return; // Stop asking for more multiplications if the timer has stopped
+
         const correctAnswer: number = num1 * num2;
         const key: string = `${num1}x${num2}`;
 
@@ -107,6 +139,10 @@ export default function MultiplicationPracticePage() {
                                 }
                             }}
                         />
+                        <p>Elapsed Time: {(elapsedTime / 1000).toFixed(2)} seconds</p>
+                        {endTime && (
+                            <p>Total Time: {(elapsedTime / 1000).toFixed(2)} seconds</p>
+                        )}
                     </Card>
                 </Col>
             </Row>
@@ -162,5 +198,5 @@ export default function MultiplicationPracticePage() {
                 </Col>
             </Row>
         </div>
-    )
+    );
 }
