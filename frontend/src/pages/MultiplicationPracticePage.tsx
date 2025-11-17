@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, Input, message, Row, Col} from 'antd';
+import {Card, Col, Input, message, Row} from 'antd';
 
 export default function MultiplicationPracticePage() {
     const MIN = 2;
@@ -28,7 +28,7 @@ export default function MultiplicationPracticePage() {
 
     const generateRandomPair = () => {
         const pairs = Object.entries(statistics)
-            .filter(([, {successRate}]) => successRate < 50); // Filter pairs with successRate below 50
+            .filter(([, {successRate}]) => successRate < 90); // Filter pairs with successRate below 50
 
         if (pairs.length > 0) {
             const randomIndex = Math.floor(Math.random() * pairs.length);
@@ -64,15 +64,17 @@ export default function MultiplicationPracticePage() {
         const correctAnswer: number = num1 * num2;
         const key: string = `${num1}x${num2}`;
 
+        const isCorrect: boolean = parseInt(userAnswer) === correctAnswer;
+        if (isCorrect) {
+            message.success('Correct!');
+            setScore((prev) => prev + 1);
+        } else {
+            message.error(`Incorrect! The correct answer was ${correctAnswer}.`);
+        }
+
         setStatistics((prevStats) => {
             const currentStats = prevStats[key] || {success: 0, fail: 0, successRate: 0};
             const isCorrect: boolean = parseInt(userAnswer) === correctAnswer;
-            if (isCorrect) {
-                message.success('Correct!');
-                setScore(score + 1);
-            } else {
-                message.error(`Incorrect! The correct answer was ${correctAnswer}.`);
-            }
             return {
                 ...prevStats,
                 [key]: calculateSuccessRate(currentStats, isCorrect)
@@ -85,30 +87,11 @@ export default function MultiplicationPracticePage() {
         setUserAnswer('');
     };
 
-    const renderStatistics = () => {
-        return Object.entries(statistics)
-            .sort(([, a], [, b]) => a.successRate - b.successRate) // Sort by successRate in ascending order
-            .map(([key, {success, fail, successRate}]) => {
-                let color = 'red';
-                if (successRate >= 90) {
-                    color = 'green';
-                } else if (successRate >= 50) {
-                    color = 'yellow';
-                }
-
-                return (
-                    <div key={key} style={{color}}>
-                        {key}: success: {success}, fail: {fail}, success rate: {successRate.toFixed()}%
-                    </div>
-                );
-            });
-    };
-
     return (
-        <div style={{ padding: '16px' }}>
-            <Row justify="center" style={{ marginBottom: '16px' }}>
-                <Col span={24} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card title="Multiplication Practice" style={{ maxWidth: 400, textAlign: 'center' }}>
+        <div style={{padding: '16px'}}>
+            <Row justify="center" style={{marginBottom: '16px'}}>
+                <Col span={24} style={{display: 'flex', justifyContent: 'center'}}>
+                    <Card title="Multiplication Practice" style={{maxWidth: 400, textAlign: 'center'}}>
                         <h2>
                             {num1} × {num2} = ?
                         </h2>
@@ -117,7 +100,7 @@ export default function MultiplicationPracticePage() {
                             value={userAnswer}
                             onChange={(e) => setUserAnswer(e.target.value)}
                             placeholder="Enter your answer"
-                            style={{ marginBottom: 16 }}
+                            style={{marginBottom: 16}}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     handleCheckAnswer();
@@ -127,52 +110,52 @@ export default function MultiplicationPracticePage() {
                     </Card>
                 </Col>
             </Row>
-            <Row justify="center" style={{ marginTop: '16px' }}>
-                <Col span={24} style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card title="Multiplication Matrix" style={{ maxWidth: 800, textAlign: 'center' }}>
-                        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+            <Row justify="center" style={{marginTop: '16px'}}>
+                <Col span={24} style={{display: 'flex', justifyContent: 'center'}}>
+                    <Card title="Multiplication Matrix" style={{maxWidth: 800, textAlign: 'center'}}>
+                        <table style={{borderCollapse: 'collapse', width: '100%'}}>
                             <thead>
-                                <tr>
-                                    <th style={{ border: '1px solid black', padding: '8px' }}>×</th>
-                                    {Array.from({ length: MAX - MIN + 1 }, (_, i) => MIN + i).map((col) => (
-                                        <th key={col} style={{ border: '1px solid black', padding: '8px' }}>{col}</th>
-                                    ))}
-                                </tr>
+                            <tr>
+                                <th style={{border: '1px solid black', padding: '8px'}}>×</th>
+                                {Array.from({length: MAX - MIN + 1}, (_, i) => MIN + i).map((col) => (
+                                    <th key={col} style={{border: '1px solid black', padding: '8px'}}>{col}</th>
+                                ))}
+                            </tr>
                             </thead>
                             <tbody>
-                                {Array.from({ length: MAX - MIN + 1 }, (_, rowIndex) => {
-                                    const row = MIN + rowIndex;
-                                    return (
-                                        <tr key={row}>
-                                            <td style={{ border: '1px solid black', padding: '8px', fontWeight: 'bold' }}>{row}</td>
-                                            {Array.from({ length: MAX - MIN + 1 }, (_, colIndex) => {
-                                                const col = MIN + colIndex;
-                                                const key = `${row}x${col}`;
-                                                const successRate = statistics[key]?.successRate || 0;
-                                                let backgroundColor = 'red';
-                                                if (successRate >= 90) {
-                                                    backgroundColor = 'green';
-                                                } else if (successRate >= 50) {
-                                                    backgroundColor = 'yellow';
-                                                }
-                                                return (
-                                                    <td
-                                                        key={key}
-                                                        style={{
-                                                            border: '1px solid black',
-                                                            padding: '8px',
-                                                            backgroundColor,
-                                                            color: 'white',
-                                                            textAlign: 'center',
-                                                        }}
-                                                    >
-                                                        {successRate.toFixed(0)}%
-                                                    </td>
-                                                );
-                                            })}
-                                        </tr>
-                                    );
-                                })}
+                            {Array.from({length: MAX - MIN + 1}, (_, rowIndex) => {
+                                const row = MIN + rowIndex;
+                                return (
+                                    <tr key={row}>
+                                        <td style={{border: '1px solid black', padding: '8px', fontWeight: 'bold'}}>{row}</td>
+                                        {Array.from({length: MAX - MIN + 1}, (_, colIndex) => {
+                                            const col: number = MIN + colIndex;
+                                            const key = `${row}x${col}`;
+                                            const successRate: number = statistics[key]?.successRate || 0;
+                                            let backgroundColor: string = 'red';
+                                            if (successRate >= 90) {
+                                                backgroundColor = 'green';
+                                            } else if (successRate >= 50) {
+                                                backgroundColor = 'yellow';
+                                            }
+                                            return (
+                                                <td
+                                                    key={key}
+                                                    style={{
+                                                        border: '1px solid black',
+                                                        padding: '8px',
+                                                        backgroundColor,
+                                                        color: 'white',
+                                                        textAlign: 'center',
+                                                    }}
+                                                >
+                                                    {successRate.toFixed(0)}%
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            })}
                             </tbody>
                         </table>
                     </Card>
